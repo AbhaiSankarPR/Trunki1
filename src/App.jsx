@@ -1,8 +1,12 @@
 import React from 'react';
-import LandingPage from './components/LandingPage';
+import AppRoutes from './Routes/AppRoutes';
+import TopNavbar from "./components/TopNavbar";
 
 function App() {
-  return <LandingPage />;
+  return (<>
+  <TopNavbar/>
+  <AppRoutes />
+  </>);
 }
 
 export default App;

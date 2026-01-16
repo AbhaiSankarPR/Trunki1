@@ -1,5 +1,5 @@
 /* index.css */
-
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Caveat:wght@400..700&family=Walter+Turncoat&display=swap');
 /* Tailwind base imports */
 @tailwind base;
 @tailwind components;
@@ -34,4 +34,9 @@ body {
 .text-stroke-pink {
   -webkit-text-stroke: 1px #ec4899; /* Tailwind pink-500 */
   color: white; /* text fill color */
+}
+.walter-turncoat-regular {
+  font-family: "Walter Turncoat", cursive;
+  font-weight: 500;
+  font-style: normal;
 }

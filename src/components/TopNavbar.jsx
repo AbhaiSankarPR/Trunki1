@@ -1,39 +1,76 @@
-import React from 'react';
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { FaFacebookF, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const TopNavbar = () => {
   const menuItems = [
-    { name: 'About', target: 'about' },
-    { name: 'Blog', target: 'blog' },
-    { name: 'FAQ', target: 'faq' },
-    { name: 'Contacts', target: 'contacts' },
+    { name: "About", target: "about" },
+    { name: "Blog", target: "blog" },
+    { name: "FAQ", target: "faq" },
+    { name: "Contacts", target: "contacts" },
   ];
 
-  const socialIcons = ['FB', 'TW', 'YT'];
+  const socialIcons = [
+    { name: "FB", icon: <FaFacebookF /> },
+    { name: "TW", icon: <FaTwitter /> },
+    { name: "YT", icon: <FaYoutube /> },
+  ];
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
-    <>
-      {/* App Name on Top-Left */}
-      <div className="fixed top-4 left-4 z-50">
-        <h1 className="text-2xl font-extrabold select-none text-stroke-pink">
-  Trunki
-</h1>
+    <header className="fixed top-4 left-0 w-full z-50 px-6">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="cursor-pointer" onClick={() => navigate("/")}>
+          <h1 className="text-3xl walter-turncoat-regular  select-none text-stroke-pink">
+            Trunki
+          </h1>
+        </div>
 
+        {location.pathname === "/" && (
+          <nav className="flex gap-4">
+            {menuItems.map((item) => (
+              <button
+                key={item.name}
+                onClick={() => scrollToSection(item.target)}
+                className="text-white font-semibold px-6 py-3 rounded-full 
+                         bg-pink-600/90 hover:bg-pink-600/60 text-lg 
+                         shadow-md hover:scale-105 transition duration-300"
+              >
+                {item.name}
+              </button>
+            ))}
+          </nav>
+        )}
+
+        {/* Right: Social Icons (only on home) */}
+        {location.pathname === "/" && (
+          <div className="flex gap-2">
+            {socialIcons.map((item) => (
+              <button
+                key={item.name}
+                className={`rounded-full shadow-sm transition duration-300 flex items-center justify-center
+      ${
+        item.name === "YT"
+          ? "bg-red-600 text-white px-4 py-2 hover:bg-red-700"
+          : "bg-white/10 text-white px-3 py-2 hover:bg-white/20"
+      }`}
+              >
+                <span className="text-lg">{item.icon}</span>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
-
-      {/* Centered Menu Buttons */}
-      <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 flex gap-4 px-6 z-50">
-        {menuItems.map((item) => (
-          <a
-            key={item.name}
-            href={`#${item.target}`}
-className="text-white font-semibold px-6 py-3 rounded-full bg-pink-600/90 hover:bg-pink-600/60 text-lg shadow-md hover:scale-105 transition duration-300"
-          >
-            {item.name}
-          </a>
-        ))}
-      </nav>
-
-    </>
+    </header>
   );
 };
 
