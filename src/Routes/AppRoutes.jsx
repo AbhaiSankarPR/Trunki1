@@ -5,6 +5,7 @@ import LandingPage from '../components/LandingPage';
 import UserType from '../components/Login';
 import StudentPage from '../pages/Students/Students';
 import TeacherPage from '../pages/Teachers/TeacherDashboard';
+// import AssessmentGame from '../pages/Students/assesmentPage';
 
 const AppRoutes = () => {
   return (
@@ -13,6 +14,7 @@ const AppRoutes = () => {
         <Route path="/login" element={<UserType />} />
         <Route path="/student" element={<StudentPage />} />
         <Route path="/teacherDashboard" element={<TeacherPage />} />
+        {/* <Route path="/assessmentPage" element={<AssessmentGame/>}/> */}
       </Routes>
   );
 };
