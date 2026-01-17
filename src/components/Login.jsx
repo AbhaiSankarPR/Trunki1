@@ -1,22 +1,42 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    // later: real teacher auth
-    navigate('/teacher');
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        alert(errorData.detail || "Login failed");
+        return;
+      }
+
+      const data = await res.json();
+
+      localStorage.setItem("teacher_token", data.access_token);
+      navigate("/teacherDashboard");
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong. Try again!");
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-pink-600 px-6">
       <div className="bg-white rounded-3xl shadow-2xl p-10 w-full max-w-md">
-
         {/* Title */}
         <h1 className="text-4xl font-extrabold text-center text-pink-600 mb-2">
           Teacher Login
@@ -62,7 +82,7 @@ const Login = () => {
 
         {/* Student Entry */}
         <button
-          onClick={() => navigate('/student')}
+          onClick={() => navigate("/student")}
           className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-4 rounded-full text-xl shadow-lg transition transform hover:scale-105"
         >
           Continue as Student

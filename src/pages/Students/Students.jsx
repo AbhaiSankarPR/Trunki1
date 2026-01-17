@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import mascot from "../../assets/imagesvg.png";
 import AssessmentGame from "./assesmentPage";
+import { joinRoom } from "../../api/student";
 
 const StudentPlay = () => {
   const [step, setStep] = useState(1);
   const [classnumber, setClassNumber] = useState("");
   const [rollNumber, setRollNumber] = useState("");
   const [studentName] = useState("Player"); // safe default
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   /* Auto move from loading → game */
   useEffect(() => {
@@ -18,9 +21,26 @@ const StudentPlay = () => {
     }
   }, [step]);
 
+  const handleStartGame = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const data = await joinRoom(classnumber, rollNumber);
+
+      // Store token (JWT-based auth)
+      localStorage.setItem("access_token", data.access_token);
+
+      setStep(4);
+    } catch (err) {
+      setError("Invalid class code or roll number");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex bg-pink-500 text-white">
-
       {/* LEFT SIDE – MASCOT */}
       <div className="hidden md:flex w-1/2 items-center justify-center bg-pink-600">
         <img
@@ -32,7 +52,6 @@ const StudentPlay = () => {
 
       {/* RIGHT SIDE – CONTENT */}
       <div className="w-full md:w-1/2 flex items-center justify-center px-6 md:px-12 relative">
-
         {/* STEP 1 */}
         {step === 1 && (
           <div className="text-center space-y-6">
@@ -95,12 +114,15 @@ const StudentPlay = () => {
 
             <button
               disabled={!rollNumber}
-              onClick={() => setStep(4)}
+              onClick={handleStartGame}
               className="mt-6 w-full bg-pink-500 text-white py-3 rounded-lg
                          font-bold disabled:opacity-50"
             >
-              Start Game →
+              {loading ? "Joining..." : "Start Game →"}
             </button>
+            {error && (
+              <p className="text-red-500 text-sm mt-3 text-center">{error}</p>
+            )}
           </div>
         )}
 
@@ -120,7 +142,6 @@ const StudentPlay = () => {
             <AssessmentGame />
           </div>
         )}
-
       </div>
     </div>
   );
