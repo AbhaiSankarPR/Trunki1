@@ -29,12 +29,17 @@ const TopNavbar = () => {
   return (
     <header className="fixed top-4 left-0 w-full z-50 px-6">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        
         {/* Logo */}
         <div
-          className="cursor-pointer"
+          className="flex items-center gap-2 cursor-pointer"
           onClick={() => navigate("/")}
         >
+          <img
+            src="/icon.svg" // or png if you want
+            alt="Trunki logo"
+            className="w-8 h-8 select-none"
+          />
+
           <h1 className="text-3xl walter-turncoat-regular select-none text-stroke-pink">
             Trunki
           </h1>
